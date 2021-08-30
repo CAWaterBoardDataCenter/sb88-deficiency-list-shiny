@@ -29,13 +29,13 @@ if(!("package:aws.s3" %in% search())) {
 source("m_file-paths.R")
 
 # Load S3 keys.
-Sys.setenv("AWS_ACCESS_KEY_ID" = scan("./app/s3-keys.txt",
+Sys.setenv("AWS_ACCESS_KEY_ID" = scan("s3-keys.txt",
                                       what = "character",
                                       quiet = TRUE)[1],
-           "AWS_SECRET_ACCESS_KEY" = scan("./app/s3-keys.txt",
+           "AWS_SECRET_ACCESS_KEY" = scan("s3-keys.txt",
                                           what = "character",
                                           quiet = TRUE)[2],
-           "AWS_DEFAULT_REGION" = scan("./app/s3-keys.txt",
+           "AWS_DEFAULT_REGION" = scan("s3-keys.txt",
                                        what = "character",
                                        quiet = TRUE)[3])
 
@@ -83,8 +83,8 @@ deficiency_list <- deficiencies %>%
     select(counties,
            owner,
            wr_id,
-           wr_type,
-           wr_status,
+           # wr_type,
+           # wr_status,
            zero_compliance,
            missing_datafiles) %>%
   mutate(zero_compliance = ifelse(zero_compliance, "X", NA),
@@ -98,7 +98,7 @@ outfile_loc <- paste0(fpath_output_sb88,
                       "/sb-88-deficiencies-",
                       format(Sys.Date(), "%Y%m%d"),
                       ".RData")
-save(deficiencies,
+save(deficiency_list,
      compliance_file_date,
      file = outfile_loc)
 put_object(file = outfile_loc,
