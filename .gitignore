@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # Keys
 s3-keys.txt
+
+# rsconnect
+rsconnect
