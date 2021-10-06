@@ -39,7 +39,10 @@ vignettes/*.pdf
 .Renviron
 
 # Keys
-s3-keys.txt
+*-s3-keys.txt
+
+# Mac
+.DS_Store
 
 # rsconnect
 rsconnect

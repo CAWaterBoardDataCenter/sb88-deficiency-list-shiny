@@ -69,12 +69,16 @@ main_list <- main_list %>%
 
 # Filter for target criteria.
 deficiencies <- main_list %>%
+
   # Maximum diversion > 10 AFA.
   filter(max_diversion > cutoff_div_size) %>%
+
   # Water right types.
   filter(wr_type %in% wr_types) %>%
+
   # Filter for zero compliance or missing datafiles, not on exception list.
   filter(zero_compliance | missing_datafiles) %>%
+
   # Not on exception list.
   filter(!enf_exception)
 
