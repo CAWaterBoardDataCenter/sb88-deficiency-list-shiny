@@ -32,17 +32,6 @@ if (!("package:DT" %in% search())) {
 ## Load S3 keys. ----
 source("load-s3-keys.R")
 
-## Load Water Right Info. ----
-s3load(object = "sb-88-deficiencies.RData",
-       bucket = "dwr-shiny-apps")
-
-# Rename columns.
-names(deficiency_list) <- c("County",
-                            "Owner Name",
-                            "Water Right ID",
-                            "Missing Device Report(s)",
-                            "Missing Datafile(s)")
-
 ## Application Title. ----
 app_title <- paste("Searchable SB-88 Measurement Regulation Deficiency List")
 
@@ -75,6 +64,11 @@ ui <- fluidPage( # Begin fluid page.
 # SERVER -----------------------------------------------------------------------
 
 server <- function(input, output, session) { # Begin server.
+
+  ## Load data. ----
+  ## Load Water Right Info. ----
+  s3load(object = "sb-88-deficiencies.RData",
+         bucket = "dwr-shiny-apps")
 
   ## Buttons. ----
 
