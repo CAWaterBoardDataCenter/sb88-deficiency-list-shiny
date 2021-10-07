@@ -50,7 +50,7 @@ ui <- fluidPage( # Begin fluid page.
   br(),
   p(paste0("List last updated: ", gsub("(\\D)0", "\\1", format(compliance_file_date, "%B %d, %Y")), ".")),
 
-    # Table.
+  # Table.
   DTOutput(outputId = "deficiency_table"),
 
   # Download filtered data button.
@@ -66,7 +66,6 @@ ui <- fluidPage( # Begin fluid page.
 server <- function(input, output, session) { # Begin server.
 
   ## Load data. ----
-  ## Load Water Right Info. ----
   s3load(object = "sb-88-deficiencies.RData",
          bucket = "dwr-shiny-apps")
 
@@ -92,11 +91,10 @@ server <- function(input, output, session) { # Begin server.
 
   },
   options = list(
-  #  columnDefs = list(list(targets = c(3:4), searchable = FALSE)),
     columnDefs = list(list(className = 'dt-center', targets = 3:4),
                       list(targets = c(3:4), searchable = FALSE)),
-    lengthMenu = c(10, 20, 50),
-    pageLength = 20
+    lengthMenu = c(15, 30, 50),
+    pageLength = 15
   ),
   filter = "top",
   rownames = FALSE)
