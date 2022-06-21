@@ -1,7 +1,7 @@
 ## Set datafile locations.
 
 # Set path to home data folder.
-fpath_home <- "/Volumes/work-stuff/data"
+fpath_home <- "~/R/work/data"
 
 # Datafile subfolder locations.
 fpath_sb88_data <- paste0(fpath_home, "/sb88")
@@ -20,8 +20,8 @@ fpath_output_sb88 <- paste0(fpath_home, "/output/sb88")
 
 # latest file function.
 latestDatafile <- function(f_path,f_regex) {
-  file.info(list.files(f_path, full.names = T)) %>% 
-    filter(grepl(f_regex, rownames(.), perl = TRUE)) %>% 
-    filter(mtime == max(mtime)) %>% 
+  file.info(list.files(f_path, full.names = T)) %>%
+    filter(grepl(f_regex, rownames(.), perl = TRUE)) %>%
+    filter(mtime == max(mtime)) %>%
     rownames()
 }

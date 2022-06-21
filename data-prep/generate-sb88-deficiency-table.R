@@ -18,15 +18,18 @@ if(!("package:purrr" %in% search())) {
 if(!("package:stringr" %in% search())) {
   suppressMessages(library(stringr))
 }
-if(!("package:openxlsx" %in% search())) {
-  suppressMessages(library(openxlsx))
-}
+# if(!("package:openxlsx" %in% search())) {
+#   suppressMessages(library(openxlsx))
+# }
 if(!("package:aws.s3" %in% search())) {
   suppressMessages(library(aws.s3))
 }
 
+# Save output?
+save_output <- FALSE
+
 # Set datafile source locations.
-source("m_file-paths.R")
+source("m-file-paths.R")
 
 # Load S3 keys.
 Sys.setenv("AWS_ACCESS_KEY_ID" = scan("swrcb-s3-keys.txt",
@@ -38,9 +41,6 @@ Sys.setenv("AWS_ACCESS_KEY_ID" = scan("swrcb-s3-keys.txt",
            "AWS_DEFAULT_REGION" = scan("swrcb-s3-keys.txt",
                                        what = "character",
                                        quiet = TRUE)[3])
-
-# Save output?
-save_output <- FALSE
 
 # Minimum max. diversion size to include.
 cutoff_div_size <- 10
@@ -57,15 +57,12 @@ wr_types <- c("Appropriative",
 # Load SB88 Compliance Lookup file.
 compliance_regex <- "(?=.*sb88-compliance-lookup-general).*RData"
 compliance_file <- latestDatafile(f_path = fpath_output_sb88,
-                                         f_regex = compliance_regex)
+                                  f_regex = compliance_regex)
 compliance_file_date <- as.Date(str_extract(string = compliance_file,
-                                    pattern = "\\d{8}"),
+                                            pattern = "\\d{8}"),
                                 format = "%Y%m%d")
 load(latestDatafile(f_path = fpath_output_sb88,
                     f_regex = compliance_regex))
-# get rid of bad UTF characters.
-main_list <- main_list %>%
-  mutate_if(is.character, ~gsub('[^ -~]', '', .))
 
 # Filter for target criteria.
 deficiencies <- main_list %>%
@@ -84,13 +81,13 @@ deficiencies <- main_list %>%
 
 # Generate deficiency list.
 deficiency_list <- deficiencies %>%
-    select(counties,
-           owner,
-           wr_id,
-           # wr_type,
-           # wr_status,
-           zero_compliance,
-           missing_datafiles) %>%
+  select(counties,
+         owner,
+         wr_id,
+         # wr_type,
+         # wr_status,
+         zero_compliance,
+         missing_datafiles) %>%
   mutate(zero_compliance = ifelse(zero_compliance, "X", NA),
          missing_datafiles = ifelse(missing_datafiles, "X", NA)) %>%
   arrange(counties, owner, wr_id)
@@ -109,13 +106,20 @@ outfile_loc <- paste0(fpath_output_sb88,
                       "/sb-88-deficiencies-",
                       format(Sys.Date(), "%Y%m%d"),
                       ".RData")
-save(deficiency_list,
-     compliance_file_date,
-     file = outfile_loc)
-put_object(file = outfile_loc,
-           object = "sb-88-deficiencies.RData",
-           bucket = "dwr-shiny-apps",
-           multipart = TRUE)
+if(save_output) {
+  save(deficiency_list,
+       compliance_file_date,
+       file = outfile_loc)
+  put_object(file = outfile_loc,
+             object = "sb-88-deficiencies.RData",
+             bucket = "dwr-shiny-apps",
+             multipart = TRUE)
+}
+
+
+
+
+
 
 
 
