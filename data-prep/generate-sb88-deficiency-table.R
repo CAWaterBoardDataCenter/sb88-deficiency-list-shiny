@@ -99,6 +99,11 @@ names(deficiency_list) <- c("County",
                             "Missing Device Report(s)",
                             "Missing Datafile(s)")
 
+# Fix non-UTF-8 Characters, which throw errors to DT.
+deficiency_list <- deficiency_list |>
+  mutate(across(.cols = where(is.character),
+                .fns = utf8::utf8_encode))
+
 ## Save data files locally and to S3 bucket. ----
 
 # Save to S3 for Shiny app to pick up.
