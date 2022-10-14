@@ -107,11 +107,12 @@ deficiency_list <- deficiency_list |>
 ## Save data files locally and to S3 bucket. ----
 
 # Save to S3 for Shiny app to pick up.
-outfile_loc <- paste0(fpath_output_sb88,
-                      "/sb-88-deficiencies-",
-                      format(Sys.Date(), "%Y%m%d"),
-                      ".RData")
+
 if(save_output) {
+  outfile_loc <- paste0(fpath_output_sb88,
+                        "/sb-88-deficiencies-",
+                        format(Sys.Date(), "%Y%m%d"),
+                        ".RData")
   save(deficiency_list,
        compliance_file_date,
        file = outfile_loc)
