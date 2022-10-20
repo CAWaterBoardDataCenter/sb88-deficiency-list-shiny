@@ -30,7 +30,15 @@ if (!("package:DT" %in% search())) {
 }
 
 ## Load S3 keys. ----
-source("load-s3-keys.R")
+Sys.setenv("AWS_ACCESS_KEY_ID" = scan("swrcb-s3-keys.txt",
+                                      what = "character",
+                                      quiet = TRUE)[1],
+           "AWS_SECRET_ACCESS_KEY" = scan("swrcb-s3-keys.txt",
+                                          what = "character",
+                                          quiet = TRUE)[2],
+           "AWS_DEFAULT_REGION" = scan("swrcb-s3-keys.txt",
+                                       what = "character",
+                                       quiet = TRUE)[3])
 
 ## Load data. ----
 s3load(object = "sb-88-deficiencies.RData",

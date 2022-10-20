@@ -18,9 +18,6 @@ if(!("package:purrr" %in% search())) {
 if(!("package:stringr" %in% search())) {
   suppressMessages(library(stringr))
 }
-# if(!("package:openxlsx" %in% search())) {
-#   suppressMessages(library(openxlsx))
-# }
 if(!("package:aws.s3" %in% search())) {
   suppressMessages(library(aws.s3))
 }
@@ -121,11 +118,3 @@ if(save_output) {
              bucket = "dwr-shiny-apps",
              multipart = TRUE)
 }
-
-
-
-
-
-
-
-
